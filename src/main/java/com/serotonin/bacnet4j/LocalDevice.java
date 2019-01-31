@@ -53,6 +53,7 @@ import org.slf4j.LoggerFactory;
 
 import com.serotonin.bacnet4j.cache.CachePolicies;
 import com.serotonin.bacnet4j.cache.RemoteEntityCache;
+import com.serotonin.bacnet4j.cache.RemoteEntityCachePolicy;
 import com.serotonin.bacnet4j.enums.MaxApduLength;
 import com.serotonin.bacnet4j.event.DefaultReinitializeDeviceHandler;
 import com.serotonin.bacnet4j.event.DeviceEventAdapter;
@@ -125,7 +126,7 @@ public class LocalDevice {
     /**
      * A collection of known peer devices on the network.
      */
-    private final RemoteEntityCache<Integer, RemoteDevice> remoteDeviceCache = new RemoteEntityCache<>(this);
+    protected final RemoteEntityCache<Integer, RemoteDevice> remoteDeviceCache = new RemoteEntityCache<>(this);
 
     /**
      * The amount of time to remember that a device lookup timed out in milliseconds. Default to 30 seconds.
@@ -734,6 +735,20 @@ public class LocalDevice {
                     future.cancel();
             }
         };
+    }
+
+    // public void addRemoteEntity(final int instanceNumber) {
+    // RemoteDevice rd;
+    //
+    // rd = new RemoteDevice(this, instanceNumber);
+    // RemoteEntityCachePolicy policy = new RemoteEntityCachePolicy.NeverExpire();
+    //
+    // remoteDeviceCache.putEntity(instanceNumber, rd, policy);
+    // }
+
+    public void addRemoteEntity(RemoteDevice rd) {
+        RemoteEntityCachePolicy policy = new RemoteEntityCachePolicy.NeverExpire();
+        remoteDeviceCache.putEntity(rd.getInstanceNumber(), rd, policy);
     }
 
     /**
