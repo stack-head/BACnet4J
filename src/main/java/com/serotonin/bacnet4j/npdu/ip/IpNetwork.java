@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,6 @@ import com.serotonin.bacnet4j.type.constructed.Address;
 import com.serotonin.bacnet4j.type.primitive.OctetString;
 import com.serotonin.bacnet4j.util.BACnetUtils;
 import com.serotonin.bacnet4j.util.sero.ByteQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Use IpNetworkBuilder to create.
@@ -103,7 +103,7 @@ public class IpNetwork extends Network implements Runnable {
     /**
      * Use an IpNetworkBuilder to create instances.
      */
-    IpNetwork(final int port, final String localBindAddress, final String broadcastAddress, final String subnetMask,
+    public IpNetwork(final int port, final String localBindAddress, final String broadcastAddress, final String subnetMask,
             final int localNetworkNumber, final boolean reuseAddress) {
         super(localNetworkNumber);
         this.port = port;
@@ -169,7 +169,7 @@ public class IpNetwork extends Network implements Runnable {
             socket = new DatagramSocket(localBindAddress);
         socket.setBroadcast(true);
 
-        //        broadcastAddress = new Address(broadcastIp, port, new Network(0xffff, new byte[0]));
+        // broadcastAddress = new Address(broadcastIp, port, new Network(0xffff, new byte[0]));
         broadcastMAC = IpNetworkUtils.toOctetString(broadcastAddressStr, port);
         subnetMask = BACnetUtils.dottedStringToBytes(subnetMaskStr);
 
@@ -278,8 +278,8 @@ public class IpNetwork extends Network implements Runnable {
     }
 
     @Override
-    public void sendNPDU(final Address recipient, final OctetString router, final ByteQueue npdu,
-            final boolean broadcast, final boolean expectsReply) throws BACnetException {
+    public void sendNPDU(final Address recipient, final OctetString router, final ByteQueue npdu, final boolean broadcast,
+            final boolean expectsReply) throws BACnetException {
         final ByteQueue queue = new ByteQueue();
 
         // BACnet virtual link layer detail
@@ -356,16 +356,15 @@ public class IpNetwork extends Network implements Runnable {
 
         final int length = BACnetUtils.popShort(queue);
         if (length != queue.size() + 4)
-            throw new MessageValidationException(
-                    "Length field does not match data: given=" + length + ", expected=" + (queue.size() + 4));
+            throw new MessageValidationException("Length field does not match data: given=" + length + ", expected=" + (queue.size() + 4));
 
         NPDU npdu = null;
         if (function == 0x0) {
             final int result = BACnetUtils.popShort(queue);
 
-           if (result == 0x10)
-                LOG.error("Write-Broadcast-Distrubution-Table failed!");  
-           else if (result == 0x20)
+            if (result == 0x10)
+                LOG.error("Write-Broadcast-Distrubution-Table failed!");
+            else if (result == 0x20)
                 LOG.error("Read-Broadcast-Distrubution-Table failed!");
             else if (result == 0x30)
                 LOG.error("Register-Foreign-Device failed!");
@@ -437,8 +436,7 @@ public class IpNetwork extends Network implements Runnable {
 
             npdu = parseNpduData(queue, linkService);
         } else
-            throw new MessageValidationException(
-                    "Unhandled BVLC function type: 0x" + Integer.toHexString(function & 0xff));
+            throw new MessageValidationException("Unhandled BVLC function type: 0x" + Integer.toHexString(function & 0xff));
 
         return npdu;
     }
@@ -591,7 +589,7 @@ public class IpNetwork extends Network implements Runnable {
                 response.pushU2B(0x10); // NAK
             }
         } else {
-            response.pushU2B(0x10); // NAK  
+            response.pushU2B(0x10); // NAK
         }
         sendPacket(IpNetworkUtils.getInetSocketAddress(origin), response.popAll());
     }
@@ -620,9 +618,9 @@ public class IpNetwork extends Network implements Runnable {
                 response.pushU2B(0x20); // NAK
             }
         } else {
-                response.push(0); // Result
-                response.pushU2B(6); // Length
-                response.pushU2B(0x20); // NAK
+            response.push(0); // Result
+            response.pushU2B(6); // Length
+            response.pushU2B(0x20); // NAK
         }
         sendPacket(IpNetworkUtils.getInetSocketAddress(origin), response.popAll());
     }
@@ -778,7 +776,8 @@ public class IpNetwork extends Network implements Runnable {
                 }
 
                 fd.timeToLive = timeToLive;
-                fd.endTime = getTransport().getLocalDevice().getClock().millis() + (timeToLive + 30) * 1000; // Adds a 30-second grace period, as per J.5.2.3
+                fd.endTime = getTransport().getLocalDevice().getClock().millis() + (timeToLive + 30) * 1000; // Adds a 30-second grace
+                                                                                                             // period, as per J.5.2.3
 
                 response.pushU2B(0); // Success
             }
@@ -802,8 +801,8 @@ public class IpNetwork extends Network implements Runnable {
                     list.pushU2B(e.timeToLive);
 
                     int remaining = (int) (e.endTime - now) / 1000;
-                    if (remaining < 0) 
-                    // Hasn't yet been cleaned up.
+                    if (remaining < 0)
+                        // Hasn't yet been cleaned up.
                         remaining = 0;
                     if (remaining > 65535)
                         remaining = 65535;
@@ -859,8 +858,7 @@ public class IpNetwork extends Network implements Runnable {
         sendPacket(IpNetworkUtils.getInetSocketAddress(origin), response.popAll());
     }
 
-    private boolean distributeBroadcastToNetwork(final ByteQueue queue, final OctetString originStr)
-            throws BACnetException {
+    private boolean distributeBroadcastToNetwork(final ByteQueue queue, final OctetString originStr) throws BACnetException {
         final InetSocketAddress origin = IpNetworkUtils.getInetSocketAddress(originStr);
 
         // Find the foreign device.
@@ -975,8 +973,7 @@ public class IpNetwork extends Network implements Runnable {
      * @param fdtEntry
      * @throws BACnetException
      */
-    public void deleteForeignDeviceTableEntry(final InetSocketAddress addr, final InetSocketAddress fdtEntry)
-            throws BACnetException {
+    public void deleteForeignDeviceTableEntry(final InetSocketAddress addr, final InetSocketAddress fdtEntry) throws BACnetException {
         final ByteQueue queue = new ByteQueue();
         queue.push(BVLC_TYPE);
         queue.push(0x08); // Delete foreign device table entry
@@ -984,7 +981,7 @@ public class IpNetwork extends Network implements Runnable {
         pushISA(queue, fdtEntry);
         sendPacket(addr, queue.popAll());
     }
-    
+
     /**
      * Enable BBMD support. Allow other device to register as BBMD or foreign device. *
      */
