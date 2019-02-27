@@ -2,7 +2,7 @@ package com.serotonin.bacnet4j.obj.mixin;
 
 import org.junit.Test;
 
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.TestUtils;
 import com.serotonin.bacnet4j.npdu.test.TestNetwork;
 import com.serotonin.bacnet4j.npdu.test.TestNetworkMap;
@@ -22,11 +22,11 @@ public class ObjectIdAndNameMixinTest {
 
     @Test
     public void uniqueDeviceName() throws Exception {
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
         d1.getDeviceObject().writeProperty(null, PropertyIdentifier.objectName,
                 new CharacterString("Unique device name"));
 
-        final LocalDevice d2 = new LocalDevice(2, new DefaultTransport(new TestNetwork(map, 2, 0))).initialize();
+        final LocalDeviceImpl d2 = new LocalDeviceImpl(2, new DefaultTransport(new TestNetwork(map, 2, 0))).initialize();
         d2.getRemoteDeviceBlocking(1);
 
         TestUtils.assertBACnetServiceException(() -> {
@@ -37,7 +37,7 @@ public class ObjectIdAndNameMixinTest {
 
     @Test
     public void changeOidObjectType() throws Exception {
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
         TestUtils.assertBACnetServiceException(() -> {
             d1.getDeviceObject().writeProperty(null,
                     new PropertyValue(PropertyIdentifier.objectIdentifier, new ObjectIdentifier(ObjectType.group, 0)));
@@ -46,7 +46,7 @@ public class ObjectIdAndNameMixinTest {
 
     @Test
     public void changeObjectType() throws Exception {
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
         TestUtils.assertBACnetServiceException(() -> {
             d1.getDeviceObject().writeProperty(null,
                     new PropertyValue(PropertyIdentifier.objectType, ObjectType.group));
@@ -55,7 +55,7 @@ public class ObjectIdAndNameMixinTest {
 
     @Test
     public void changeInstanceNumber() throws Exception {
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
         final GroupObject go = new GroupObject(d1, 0, "go", new SequenceOf<>());
         go.writeProperty(null,
                 new PropertyValue(PropertyIdentifier.objectIdentifier, new ObjectIdentifier(ObjectType.group, 1)));
@@ -63,7 +63,7 @@ public class ObjectIdAndNameMixinTest {
 
     @Test
     public void uniqueInstanceNumber() throws Exception {
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
         final GroupObject go0 = new GroupObject(d1, 0, "go0", new SequenceOf<>());
         final GroupObject go1 = new GroupObject(d1, 1, "go1", new SequenceOf<>());
         TestUtils.assertBACnetServiceException(() -> {
@@ -73,7 +73,7 @@ public class ObjectIdAndNameMixinTest {
 
     @Test
     public void changeName() throws Exception {
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
         final GroupObject go0 = new GroupObject(d1, 0, "go0", new SequenceOf<>());
         new GroupObject(d1, 1, "go1", new SequenceOf<>());
         go0.writeProperty(null, new PropertyValue(PropertyIdentifier.objectName, new CharacterString("that")));
@@ -81,7 +81,7 @@ public class ObjectIdAndNameMixinTest {
 
     @Test
     public void uniqueName() throws Exception {
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
         final GroupObject go0 = new GroupObject(d1, 0, "go0", new SequenceOf<>());
         new GroupObject(d1, 1, "go1", new SequenceOf<>());
         TestUtils.assertBACnetServiceException(() -> {

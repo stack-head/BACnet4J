@@ -9,7 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.RemoteDevice;
 import com.serotonin.bacnet4j.TestUtils;
 import com.serotonin.bacnet4j.enums.Month;
@@ -54,7 +54,7 @@ import lohbihler.warp.WarpClock;
 public class ReadRangeRequestTest {
     private final TestNetworkMap map = new TestNetworkMap();
     final PropertyIdentifier pid = PropertyIdentifier.forId(9999);
-    private final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0)));
+    private final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0)));
     final DateTime now = new DateTime(d1);
 
     @Before
@@ -81,7 +81,7 @@ public class ReadRangeRequestTest {
                 new Recipient(new ObjectIdentifier(ObjectType.device, 6)));
         d1.getObject(d1.getId()).writePropertyInternal(PropertyIdentifier.restartNotificationRecipients, recipients);
 
-        final LocalDevice d2 = new LocalDevice(2, new DefaultTransport(new TestNetwork(map, 2, 0))).initialize();
+        final LocalDeviceImpl d2 = new LocalDeviceImpl(2, new DefaultTransport(new TestNetwork(map, 2, 0))).initialize();
 
         final RemoteDevice rd1 = d2.getRemoteDeviceBlocking(1);
         final ReadRangeAck ack = d2
@@ -106,11 +106,11 @@ public class ReadRangeRequestTest {
     public void trendLogMultiple() throws Exception {
         final WarpClock clock = new WarpClock();
 
-        final LocalDevice d11 = new LocalDevice(11, new DefaultTransport(new TestNetwork(map, 11, 0))).withClock(clock)
+        final LocalDeviceImpl d11 = new LocalDeviceImpl(11, new DefaultTransport(new TestNetwork(map, 11, 0))).withClock(clock)
                 .initialize();
         final AnalogInputObject ai = new AnalogInputObject(d11, 0, "ai", 12, EngineeringUnits.noUnits, false);
 
-        final LocalDevice d12 = new LocalDevice(12, new DefaultTransport(new TestNetwork(map, 12, 0))).withClock(clock)
+        final LocalDeviceImpl d12 = new LocalDeviceImpl(12, new DefaultTransport(new TestNetwork(map, 12, 0))).withClock(clock)
                 .initialize();
         final TrendLogMultipleObject tl = new TrendLogMultipleObject(d12, 0, "tlm", new LinkedListLogBuffer<>(), true,
                 DateTime.UNSPECIFIED, DateTime.UNSPECIFIED,

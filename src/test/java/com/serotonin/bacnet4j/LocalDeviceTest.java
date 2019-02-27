@@ -40,13 +40,13 @@ public class LocalDeviceTest {
     // when doing discoveries.
     private final WarpClock clock = new WarpClock();
     private final TestNetworkMap map = new TestNetworkMap();
-    LocalDevice d1;
-    LocalDevice d2;
+    LocalDeviceImpl d1;
+    LocalDeviceImpl d2;
 
     @Before
     public void before() throws Exception {
-        d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 100))).initialize();
-        d2 = new LocalDevice(2, new DefaultTransport(new TestNetwork(map, 2, 100))).initialize();
+        d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 100))).initialize();
+        d2 = new LocalDeviceImpl(2, new DefaultTransport(new TestNetwork(map, 2, 100))).initialize();
     }
 
     @After
@@ -111,7 +111,7 @@ public class LocalDeviceTest {
 
     @Test
     public void undefinedDeviceId() throws Exception {
-        final LocalDevice ld = new LocalDevice(ObjectIdentifier.UNINITIALIZED,
+        final LocalDeviceImpl ld = new LocalDeviceImpl(ObjectIdentifier.UNINITIALIZED,
                 new DefaultTransport(new TestNetwork(map, 3, 10)));
         ld.setClock(clock);
         new Thread(() -> clock.plus(200, TimeUnit.SECONDS, 10, TimeUnit.SECONDS, 10, 0)).start();
@@ -137,7 +137,7 @@ public class LocalDeviceTest {
 
     @Test(expected = BACnetServiceException.class)
     public void createSecondDevice() throws BACnetServiceException {
-        final LocalDevice ld = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0)));
+        final LocalDeviceImpl ld = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0)));
         final DeviceObject o = new DeviceObject(ld, 2);
 
         // Ensure the device object was not automatically added to the local device.
@@ -150,7 +150,7 @@ public class LocalDeviceTest {
     @SuppressWarnings("unused")
     @Test
     public void getDeviceBlockingTimeout() throws Exception {
-        final LocalDevice d3 = new LocalDevice(3, new DefaultTransport(new TestNetwork(map, 3, 0))).withClock(clock)
+        final LocalDeviceImpl d3 = new LocalDeviceImpl(3, new DefaultTransport(new TestNetwork(map, 3, 0))).withClock(clock)
                 .initialize();
 
         final long start = Clock.systemUTC().millis();

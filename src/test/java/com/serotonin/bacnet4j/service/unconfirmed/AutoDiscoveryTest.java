@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.RemoteDevice;
 import com.serotonin.bacnet4j.RemoteObject;
 import com.serotonin.bacnet4j.event.DeviceEventAdapter;
@@ -25,8 +25,8 @@ public class AutoDiscoveryTest {
     @Test
     public void iHaveToWhoIs() throws Exception {
         final TestNetworkMap map = new TestNetworkMap();
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
-        final LocalDevice d2 = new LocalDevice(2, new DefaultTransport(new TestNetwork(map, 2, 0))).initialize();
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
+        final LocalDeviceImpl d2 = new LocalDeviceImpl(2, new DefaultTransport(new TestNetwork(map, 2, 0))).initialize();
 
         d1.getEventHandler().addListener(new DeviceEventAdapter() {
             @Override

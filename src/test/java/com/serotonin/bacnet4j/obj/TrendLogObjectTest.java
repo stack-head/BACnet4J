@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.serotonin.bacnet4j.AbstractTest;
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.RemoteDevice;
 import com.serotonin.bacnet4j.TestUtils;
 import com.serotonin.bacnet4j.obj.logBuffer.LinkedListLogBuffer;
@@ -177,7 +177,7 @@ public class TrendLogObjectTest extends AbstractTest {
         cov(tl, d1, ao);
     }
 
-    private void cov(final TrendLogObject tl, final LocalDevice d, final BACnetObject bo) throws Exception {
+    private void cov(final TrendLogObject tl, final LocalDeviceImpl d, final BACnetObject bo) throws Exception {
         DateTime now = new DateTime(clock.millis());
 
         // Wait for the COV to set up, and for the initial notification to be sent.

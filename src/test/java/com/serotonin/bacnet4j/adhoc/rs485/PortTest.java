@@ -2,7 +2,7 @@ package com.serotonin.bacnet4j.adhoc.rs485;
 
 import java.util.Arrays;
 
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.npdu.mstp.MasterNode;
 import com.serotonin.bacnet4j.npdu.mstp.MstpNetwork;
 import com.serotonin.bacnet4j.npdu.mstp.SlaveNode;
@@ -44,7 +44,7 @@ public class PortTest {
             node.setUsageTimeout(100);
             final MstpNetwork network = new MstpNetwork(node, 0);
             final Transport transport = new DefaultTransport(network);
-            final LocalDevice ld = new LocalDevice(1970, transport);
+            final LocalDeviceImpl ld = new LocalDeviceImpl(1970, transport);
             ld.initialize();
             System.out.println(prefix() + "Initialized");
 
@@ -74,7 +74,7 @@ public class PortTest {
             final SlaveNode node = new SlaveNode("test", in, out, (byte) 3);
             final MstpNetwork network = new MstpNetwork(node, 0);
             final Transport transport = new DefaultTransport(network);
-            final LocalDevice ld = new LocalDevice(1968, transport);
+            final LocalDeviceImpl ld = new LocalDeviceImpl(1968, transport);
             ld.initialize();
 
             ld.startRemoteDeviceDiscovery((r) -> {

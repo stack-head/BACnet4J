@@ -24,9 +24,9 @@ public class SetupTest {
         final TestNetworkMap map = new TestNetworkMap();
         final WarpClock clock = new WarpClock();
 
-        final List<LocalDevice> lds = new ArrayList<>();
+        final List<LocalDeviceImpl> lds = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            lds.add(new LocalDevice(i, new DefaultTransport(new TestNetwork(map, i, 0).withTimeout(timeout)))
+            lds.add(new LocalDeviceImpl(i, new DefaultTransport(new TestNetwork(map, i, 0).withTimeout(timeout)))
                     .withClock(clock));
         }
 
@@ -35,7 +35,7 @@ public class SetupTest {
         }
 
         for (int i = 0; i < count; i++) {
-            final LocalDevice d = lds.get(i);
+            final LocalDeviceImpl d = lds.get(i);
             for (int j = 0; j < count; j++) {
                 if (i != j) {
                     if ((i + j) % 2 == 0) {

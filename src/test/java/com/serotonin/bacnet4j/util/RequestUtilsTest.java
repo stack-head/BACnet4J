@@ -16,7 +16,7 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.RemoteDevice;
 import com.serotonin.bacnet4j.ServiceFuture;
 import com.serotonin.bacnet4j.TestUtils;
@@ -69,7 +69,7 @@ public class RequestUtilsTest {
 
         final CachePolicies policies = new CachePolicies();
 
-        final LocalDevice d = Mockito.mock(LocalDevice.class);
+        final LocalDeviceImpl d = Mockito.mock(LocalDeviceImpl.class);
         when(d.getCachePolicies()).thenReturn(policies);
 
         final RemoteDevice rd = new RemoteDevice(d, 123);
@@ -149,8 +149,8 @@ public class RequestUtilsTest {
      */
     @Test
     public void sendOneAtATimeOnError() throws Exception {
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
-        final LocalDevice d2 = new LocalDevice(2, new DefaultTransport(new TestNetwork(map, 2, 0))).initialize();
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
+        final LocalDeviceImpl d2 = new LocalDeviceImpl(2, new DefaultTransport(new TestNetwork(map, 2, 0))).initialize();
         final AnalogInputObject ai = new AnalogInputObject(d2, 0, "ai", 0, EngineeringUnits.noUnits, false);
         final RemoteDevice rd2 = d1.getRemoteDeviceBlocking(2);
 

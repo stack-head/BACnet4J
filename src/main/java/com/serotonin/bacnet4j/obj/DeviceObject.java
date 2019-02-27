@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.RemoteDevice;
 import com.serotonin.bacnet4j.enums.MaxApduLength;
 import com.serotonin.bacnet4j.exception.BACnetServiceException;
@@ -185,7 +186,7 @@ public class DeviceObject extends BACnetObject {
         writePropertyInternal(PropertyIdentifier.systemStatus, DeviceStatus.operational);
         writePropertyInternal(PropertyIdentifier.modelName, new CharacterString("BACnet4J"));
         writePropertyInternal(PropertyIdentifier.firmwareRevision, new CharacterString("not set"));
-        writePropertyInternal(PropertyIdentifier.applicationSoftwareVersion, new CharacterString(LocalDevice.VERSION));
+        writePropertyInternal(PropertyIdentifier.applicationSoftwareVersion, new CharacterString(LocalDeviceImpl.VERSION));
         writePropertyInternal(PropertyIdentifier.protocolVersion, new UnsignedInteger(1));
         writePropertyInternal(PropertyIdentifier.protocolRevision, new UnsignedInteger(19));
 

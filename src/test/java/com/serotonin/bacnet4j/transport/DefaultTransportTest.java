@@ -11,7 +11,7 @@ import java.time.Clock;
 import org.junit.Test;
 import org.mockito.InOrder;
 
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.apdu.APDU;
 import com.serotonin.bacnet4j.apdu.ConfirmedRequest;
 import com.serotonin.bacnet4j.apdu.SegmentACK;
@@ -34,7 +34,7 @@ public class DefaultTransportTest {
         final Network network = mock(Network.class);
         when(network.isThisNetwork(any())).thenReturn(true);
 
-        final LocalDevice localDevice = mock(LocalDevice.class);
+        final LocalDeviceImpl localDevice = mock(LocalDeviceImpl.class);
         when(localDevice.getClock()).thenReturn(Clock.systemUTC());
 
         final ServicesSupported servicesSupported = new ServicesSupported();
@@ -80,7 +80,7 @@ public class DefaultTransportTest {
         final Network network = mock(Network.class);
         when(network.isThisNetwork(any())).thenReturn(true);
 
-        final LocalDevice localDevice = mock(LocalDevice.class);
+        final LocalDeviceImpl localDevice = mock(LocalDeviceImpl.class);
         when(localDevice.getClock()).thenReturn(Clock.systemUTC());
         when(localDevice.getEventHandler()).thenReturn(new DeviceEventHandler());
 

@@ -13,7 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.RemoteDevice;
 import com.serotonin.bacnet4j.exception.BACnetException;
 import com.serotonin.bacnet4j.exception.BACnetTimeoutException;
@@ -24,18 +24,18 @@ import com.serotonin.bacnet4j.util.RemoteDeviceFinder.RemoteDeviceFuture;
 
 public class RemoteDeviceFinderTest {
     private final TestNetworkMap map = new TestNetworkMap();
-    LocalDevice d1;
-    LocalDevice d2;
-    LocalDevice d3;
+    LocalDeviceImpl d1;
+    LocalDeviceImpl d2;
+    LocalDeviceImpl d3;
     RemoteDevice rd1;
     RemoteDevice rd2;
     RemoteDevice rd3;
 
     @Before
     public void before() throws Exception {
-        d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 20))).initialize();
-        d2 = new LocalDevice(2, new DefaultTransport(new TestNetwork(map, 2, 20))).initialize();
-        d3 = new LocalDevice(3, new DefaultTransport(new TestNetwork(map, 3, 20))).initialize();
+        d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 20))).initialize();
+        d2 = new LocalDeviceImpl(2, new DefaultTransport(new TestNetwork(map, 2, 20))).initialize();
+        d3 = new LocalDeviceImpl(3, new DefaultTransport(new TestNetwork(map, 3, 20))).initialize();
     }
 
     @After

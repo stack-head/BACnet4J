@@ -8,7 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.TestUtils;
 import com.serotonin.bacnet4j.npdu.test.TestNetwork;
 import com.serotonin.bacnet4j.npdu.test.TestNetworkMap;
@@ -33,12 +33,12 @@ public class AtomicReadFileRequestTest {
     private final String filename = "fileObjectTest.txt";
     private final String path = getClass().getClassLoader().getResource(filename).getPath();
 
-    private LocalDevice d1;
+    private LocalDeviceImpl d1;
     private AnalogInputObject ai;
 
     @Before
     public void before() throws Exception {
-        d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
+        d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0))).initialize();
         ai = new AnalogInputObject(d1, 0, "ai", 0, EngineeringUnits.noUnits, false);
     }
 

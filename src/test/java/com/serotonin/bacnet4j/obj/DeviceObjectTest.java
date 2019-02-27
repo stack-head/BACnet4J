@@ -1,27 +1,18 @@
 package com.serotonin.bacnet4j.obj;
 
-import static java.util.concurrent.TimeUnit.MINUTES;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-import java.time.temporal.ChronoField;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.serotonin.bacnet4j.AbstractTest;
-import com.serotonin.bacnet4j.event.DeviceEventAdapter;
 import com.serotonin.bacnet4j.exception.BACnetErrorException;
 import com.serotonin.bacnet4j.exception.BACnetException;
 import com.serotonin.bacnet4j.service.confirmed.DeleteObjectRequest;
-import com.serotonin.bacnet4j.type.constructed.Address;
 import com.serotonin.bacnet4j.type.constructed.AddressBinding;
 import com.serotonin.bacnet4j.type.constructed.BACnetArray;
 import com.serotonin.bacnet4j.type.constructed.DateTime;
@@ -115,59 +106,59 @@ public class DeviceObjectTest extends AbstractTest {
         assertEquals(databaseRevision.increment32(), d1.getDeviceObject().get(PropertyIdentifier.databaseRevision));
     }
 
-    @Test
-    public void timeSynchronization() throws Exception {
-        final CountDownLatch latch = new CountDownLatch(2);
-
-        // Set up time sync for every 4 hours aligned with a 5 minute offset.
-        d1.getDeviceObject().supportTimeSynchronization(new SequenceOf<>(new Recipient(d2.getId())),
-                new SequenceOf<>(new Recipient(d3.getId())), 240, true, 5);
-
-        // Add listeners to d2 and d3
-        final AtomicReference<DateTime> d2Time = new AtomicReference<>();
-        final AtomicBoolean d2Utc = new AtomicBoolean();
-        d2.getEventHandler().addListener(new DeviceEventAdapter() {
-            @Override
-            public void synchronizeTime(final Address from, final DateTime dateTime, final boolean utc) {
-                d2Time.set(dateTime);
-                d2Utc.set(utc);
-                latch.countDown();
-            }
-        });
-
-        final AtomicReference<DateTime> d3Time = new AtomicReference<>();
-        final AtomicBoolean d3Utc = new AtomicBoolean();
-        d3.getEventHandler().addListener(new DeviceEventAdapter() {
-            @Override
-            public void synchronizeTime(final Address from, final DateTime dateTime, final boolean utc) {
-                d3Time.set(dateTime);
-                d3Utc.set(utc);
-                latch.countDown();
-            }
-        });
-
-        //
-        // Advance the clock to the notification time.
-        clock.plusMillis((1000 - clock.get(ChronoField.MILLI_OF_SECOND)) % 1000);
-        clock.plusSeconds((60 - clock.get(ChronoField.SECOND_OF_MINUTE)) % 60);
-        final int minutes = (1445 - clock.get(ChronoField.MINUTE_OF_DAY)) % 240;
-        clock.plus(minutes, MINUTES, 0);
-
-        latch.await(1, TimeUnit.SECONDS);
-
-        // Check the results.
-        assertNotNull(d2Time.get());
-        assertNotNull(d3Time.get());
-
-        final int offsetHundredths = TimeZone.getDefault().getOffset(clock.millis()) / 10;
-        final int adjustedHundredths = (d3Time.get().getTime().getHundredthInDay() + offsetHundredths + 8_640_000)
-                % 8_640_000;
-        assertEquals(new DateTime(d1), d2Time.get());
-        assertEquals(d2Time.get().getTime().getHundredthInDay(), adjustedHundredths);
-
-        assertEquals(false, d2Utc.get());
-        assertEquals(true, d3Utc.get());
-    }
+//    @Test
+//    public void timeSynchronization() throws Exception {
+//        final CountDownLatch latch = new CountDownLatch(2);
+//
+//        // Set up time sync for every 4 hours aligned with a 5 minute offset.
+//        d1.getDeviceObject().supportTimeSynchronization(new SequenceOf<>(new Recipient(d2.getId())),
+//                new SequenceOf<>(new Recipient(d3.getId())), 240, true, 5);
+//
+//        // Add listeners to d2 and d3
+//        final AtomicReference<DateTime> d2Time = new AtomicReference<>();
+//        final AtomicBoolean d2Utc = new AtomicBoolean();
+//        d2.getEventHandler().addListener(new DeviceEventAdapter() {
+//            @Override
+//            public void synchronizeTime(final Address from, final DateTime dateTime, final boolean utc) {
+//                d2Time.set(dateTime);
+//                d2Utc.set(utc);
+//                latch.countDown();
+//            }
+//        });
+//
+//        final AtomicReference<DateTime> d3Time = new AtomicReference<>();
+//        final AtomicBoolean d3Utc = new AtomicBoolean();
+//        d3.getEventHandler().addListener(new DeviceEventAdapter() {
+//            @Override
+//            public void synchronizeTime(final Address from, final DateTime dateTime, final boolean utc) {
+//                d3Time.set(dateTime);
+//                d3Utc.set(utc);
+//                latch.countDown();
+//            }
+//        });
+//
+//        //
+//        // Advance the clock to the notification time.
+//        clock.plusMillis((1000 - clock.get(ChronoField.MILLI_OF_SECOND)) % 1000);
+//        clock.plusSeconds((60 - clock.get(ChronoField.SECOND_OF_MINUTE)) % 60);
+//        final int minutes = (1445 - clock.get(ChronoField.MINUTE_OF_DAY)) % 240;
+//        clock.plus(minutes, MINUTES, 0);
+//
+//        latch.await(1, TimeUnit.SECONDS);
+//
+//        // Check the results.
+//        assertNotNull(d2Time.get());
+//        assertNotNull(d3Time.get());
+//
+//        final int offsetHundredths = TimeZone.getDefault().getOffset(clock.millis()) / 10;
+//        final int adjustedHundredths = (d3Time.get().getTime().getHundredthInDay() + offsetHundredths + 8_640_000)
+//                % 8_640_000;
+//        assertEquals(new DateTime(d1), d2Time.get());
+//        assertEquals(d2Time.get().getTime().getHundredthInDay(), adjustedHundredths);
+//
+//        assertEquals(false, d2Utc.get());
+//        assertEquals(true, d3Utc.get());
+//    }
 
     @Test
     public void calculatedProperties() throws Exception {

@@ -19,13 +19,13 @@ abstract public class AbstractTest {
 
     private final TestNetworkMap map = new TestNetworkMap();
     protected final WarpClock clock = new WarpClock();
-    protected final LocalDevice d1 = new LocalDevice(1,
+    protected final LocalDeviceImpl d1 = new LocalDeviceImpl(1,
             new DefaultTransport(new TestNetwork(map, 1, 0).withTimeout(TIMEOUT))).withClock(clock);
-    protected final LocalDevice d2 = new LocalDevice(2,
+    protected final LocalDeviceImpl d2 = new LocalDeviceImpl(2,
             new DefaultTransport(new TestNetwork(map, 2, 0).withTimeout(TIMEOUT))).withClock(clock);
-    protected final LocalDevice d3 = new LocalDevice(3, new DefaultTransport(new TestNetwork(map, 3, 0)))
+    protected final LocalDeviceImpl d3 = new LocalDeviceImpl(3, new DefaultTransport(new TestNetwork(map, 3, 0)))
             .withClock(clock);
-    protected final LocalDevice d4 = new LocalDevice(4, new DefaultTransport(new TestNetwork(map, 4, 0)))
+    protected final LocalDeviceImpl d4 = new LocalDeviceImpl(4, new DefaultTransport(new TestNetwork(map, 4, 0)))
             .withClock(clock);
     protected RemoteDevice rd1;
     protected RemoteDevice rd2;

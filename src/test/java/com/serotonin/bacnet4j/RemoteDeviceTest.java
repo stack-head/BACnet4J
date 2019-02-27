@@ -21,7 +21,7 @@ public class RemoteDeviceTest {
 
     @Test
     public void nonsequenceProperties() {
-        final LocalDevice d = new LocalDevice(1234, new DefaultTransport(new TestNetwork(map, 1, 10)));
+        final LocalDeviceImpl d = new LocalDeviceImpl(1234, new DefaultTransport(new TestNetwork(map, 1, 10)));
         final RemoteDevice rd = new RemoteDevice(d, 1235);
         final ObjectIdentifier oid = new ObjectIdentifier(ObjectType.binaryValue, 0);
 
@@ -48,7 +48,7 @@ public class RemoteDeviceTest {
     }
 
     public void sequenceProperties() {
-        final LocalDevice d = new LocalDevice(1234, new DefaultTransport(new TestNetwork(map, 1, 10)));
+        final LocalDeviceImpl d = new LocalDeviceImpl(1234, new DefaultTransport(new TestNetwork(map, 1, 10)));
         final RemoteDevice rd = new RemoteDevice(d, 1235);
         final ObjectIdentifier ai1 = new ObjectIdentifier(ObjectType.analogInput, 0);
         final ObjectIdentifier ai2 = new ObjectIdentifier(ObjectType.analogInput, 1);

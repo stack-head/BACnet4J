@@ -70,7 +70,7 @@ public class MessagingTest {
     @Test
     public void networkTest() throws Exception {
         final TestNetwork network1 = new TestNetwork(map, 1, 200);
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(network1));
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(network1));
 
         final MutableObject<RemoteDevice> o = new MutableObject<>();
         d1.getEventHandler().addListener(new DeviceEventAdapter() {
@@ -83,7 +83,7 @@ public class MessagingTest {
 
         final Address a2 = new Address(new byte[] { 2 });
         final TestNetwork network2 = new TestNetwork(map, a2, 200);
-        final LocalDevice d2 = new LocalDevice(2, new DefaultTransport(network2));
+        final LocalDeviceImpl d2 = new LocalDeviceImpl(2, new DefaultTransport(network2));
         d2.initialize();
 
         d1.sendLocalBroadcast(new WhoIsRequest());
@@ -100,11 +100,11 @@ public class MessagingTest {
     @Test
     public void readRequest() throws Exception {
         // Create the first local device.
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 200)));
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 200)));
         d1.initialize();
 
         // Create the second local device.
-        final LocalDevice d2 = new LocalDevice(2,
+        final LocalDeviceImpl d2 = new LocalDeviceImpl(2,
                 new DefaultTransport(new TestNetwork(map, new Address(new byte[] { 2 }), 200)));
         createAnalogValue(d2, 0);
         d2.initialize();
@@ -152,11 +152,11 @@ public class MessagingTest {
     @Test
     public void segmentedResponse() throws Exception {
         // Create the first local device.
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 200)));
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 200)));
         d1.initialize();
 
         // Create the second local device.
-        final LocalDevice d2 = new LocalDevice(2, new DefaultTransport(new TestNetwork(map, 2, 200)));
+        final LocalDeviceImpl d2 = new LocalDeviceImpl(2, new DefaultTransport(new TestNetwork(map, 2, 200)));
         for (int i = 0; i < 1000; i++)
             createAnalogValue(d2, i);
         d2.initialize();
@@ -203,11 +203,11 @@ public class MessagingTest {
     @Test
     public void writeRequest() throws Exception {
         // Create the first local device.
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 20)));
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 20)));
         d1.initialize();
 
         // Create the second local device.
-        final LocalDevice d2 = new LocalDevice(2, new DefaultTransport(new TestNetwork(map, 2, 30)));
+        final LocalDeviceImpl d2 = new LocalDeviceImpl(2, new DefaultTransport(new TestNetwork(map, 2, 30)));
         final ObjectIdentifier av0 = new ObjectIdentifier(ObjectType.analogValue, 0);
         createAnalogValue(d2, 0);
         d2.initialize();
@@ -246,11 +246,11 @@ public class MessagingTest {
     @Test
     public void segmentedRequest() throws Exception {
         // Create the first local device.
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 20)));
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 20)));
         d1.initialize();
 
         // Create the second local device.
-        final LocalDevice d2 = new LocalDevice(2, new DefaultTransport(new TestNetwork(map, 2, 25)));
+        final LocalDeviceImpl d2 = new LocalDeviceImpl(2, new DefaultTransport(new TestNetwork(map, 2, 25)));
         for (int i = 0; i < 1000; i++)
             createAnalogValue(d2, i);
         d2.initialize();
@@ -299,10 +299,10 @@ public class MessagingTest {
 
     @Test(expected = BACnetTimeoutException.class)
     public void disappearingRemoteDevice() throws Exception {
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0)));
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0)));
         d1.initialize();
 
-        final LocalDevice d2 = new LocalDevice(2, new DefaultTransport(new TestNetwork(map, 2, 0)));
+        final LocalDeviceImpl d2 = new LocalDeviceImpl(2, new DefaultTransport(new TestNetwork(map, 2, 0)));
         createAnalogValue(d2, 0);
         d2.initialize();
 
@@ -338,10 +338,10 @@ public class MessagingTest {
 
     @Test
     public void readError() throws Exception {
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0)));
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0)));
         d1.initialize();
 
-        final LocalDevice d2 = new LocalDevice(2, new DefaultTransport(new TestNetwork(map, 2, 0)));
+        final LocalDeviceImpl d2 = new LocalDeviceImpl(2, new DefaultTransport(new TestNetwork(map, 2, 0)));
         d2.initialize();
 
         final RemoteDevice rd2 = d1.getRemoteDeviceBlocking(2);
@@ -361,7 +361,7 @@ public class MessagingTest {
         }
     }
 
-    private static BACnetObject createAnalogValue(final LocalDevice localDevice, final int id)
+    private static BACnetObject createAnalogValue(final LocalDeviceImpl localDevice, final int id)
             throws BACnetServiceException {
         final BACnetObject bo = new BACnetObject(localDevice, ObjectType.analogValue, id) //
                 .writePropertyInternal(PropertyIdentifier.presentValue, new Real(3.14F)) //

@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.TestUtils;
 import com.serotonin.bacnet4j.exception.BACnetException;
 import com.serotonin.bacnet4j.npdu.test.TestNetwork;
@@ -26,11 +26,11 @@ import static org.junit.Assert.assertEquals;
 public class ReadPropertyRequestTest {
     private final TestNetworkMap map = new TestNetworkMap();
     private final Address addr = TestNetworkUtils.toAddress(2);
-    private LocalDevice localDevice;
+    private LocalDeviceImpl localDevice;
 
     @Before
     public void before() throws Exception {
-        localDevice = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0)));
+        localDevice = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0)));
         localDevice.initialize();
     }
 

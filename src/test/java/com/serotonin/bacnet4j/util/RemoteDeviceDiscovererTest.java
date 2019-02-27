@@ -9,7 +9,7 @@ import java.util.function.BiPredicate;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.RemoteDevice;
 import com.serotonin.bacnet4j.TestUtils;
 import com.serotonin.bacnet4j.npdu.test.TestNetwork;
@@ -23,13 +23,13 @@ public class RemoteDeviceDiscovererTest {
     public void noCallback() throws Exception {
         final BiPredicate<Integer, RemoteDevice> predicate = (i, d) -> d.getInstanceNumber() == i;
 
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 1))).initialize();
-        final LocalDevice d2 = new LocalDevice(12, new DefaultTransport(new TestNetwork(map, 112, 1))).initialize();
-        final LocalDevice d3 = new LocalDevice(13, new DefaultTransport(new TestNetwork(map, 113, 1))).initialize();
-        final LocalDevice d4 = new LocalDevice(14, new DefaultTransport(new TestNetwork(map, 114, 1))).initialize();
-        final LocalDevice d5 = new LocalDevice(15, new DefaultTransport(new TestNetwork(map, 115, 1))).initialize();
-        final LocalDevice d6 = new LocalDevice(16, new DefaultTransport(new TestNetwork(map, 116, 1))).initialize();
-        final LocalDevice d7 = new LocalDevice(17, new DefaultTransport(new TestNetwork(map, 117, 1))).initialize();
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 1))).initialize();
+        final LocalDeviceImpl d2 = new LocalDeviceImpl(12, new DefaultTransport(new TestNetwork(map, 112, 1))).initialize();
+        final LocalDeviceImpl d3 = new LocalDeviceImpl(13, new DefaultTransport(new TestNetwork(map, 113, 1))).initialize();
+        final LocalDeviceImpl d4 = new LocalDeviceImpl(14, new DefaultTransport(new TestNetwork(map, 114, 1))).initialize();
+        final LocalDeviceImpl d5 = new LocalDeviceImpl(15, new DefaultTransport(new TestNetwork(map, 115, 1))).initialize();
+        final LocalDeviceImpl d6 = new LocalDeviceImpl(16, new DefaultTransport(new TestNetwork(map, 116, 1))).initialize();
+        final LocalDeviceImpl d7 = new LocalDeviceImpl(17, new DefaultTransport(new TestNetwork(map, 117, 1))).initialize();
 
         final RemoteDeviceDiscoverer discoverer = new RemoteDeviceDiscoverer(d1);
         discoverer.start();
@@ -41,7 +41,7 @@ public class RemoteDeviceDiscovererTest {
 
         //
         // Add some more devices
-        final LocalDevice d8 = new LocalDevice(18, new DefaultTransport(new TestNetwork(map, 118, 1))).initialize();
+        final LocalDeviceImpl d8 = new LocalDeviceImpl(18, new DefaultTransport(new TestNetwork(map, 118, 1))).initialize();
         d8.sendGlobalBroadcast(d8.getIAm());
         Thread.sleep(300);
 
@@ -53,9 +53,9 @@ public class RemoteDeviceDiscovererTest {
         // Add some more devices
         d2.sendGlobalBroadcast(d2.getIAm());
         d3.sendGlobalBroadcast(d3.getIAm());
-        final LocalDevice d9 = new LocalDevice(19, new DefaultTransport(new TestNetwork(map, 119, 1))).initialize();
+        final LocalDeviceImpl d9 = new LocalDeviceImpl(19, new DefaultTransport(new TestNetwork(map, 119, 1))).initialize();
         d9.sendGlobalBroadcast(d9.getIAm());
-        final LocalDevice d10 = new LocalDevice(20, new DefaultTransport(new TestNetwork(map, 120, 1))).initialize();
+        final LocalDeviceImpl d10 = new LocalDeviceImpl(20, new DefaultTransport(new TestNetwork(map, 120, 1))).initialize();
         d10.sendGlobalBroadcast(d10.getIAm());
         Thread.sleep(300);
 
@@ -65,9 +65,9 @@ public class RemoteDeviceDiscovererTest {
 
         // Stop and add more devices to make sure they are not discovered.
         discoverer.stop();
-        final LocalDevice d11 = new LocalDevice(21, new DefaultTransport(new TestNetwork(map, 121, 1))).initialize();
+        final LocalDeviceImpl d11 = new LocalDeviceImpl(21, new DefaultTransport(new TestNetwork(map, 121, 1))).initialize();
         d11.sendGlobalBroadcast(d11.getIAm());
-        final LocalDevice d12 = new LocalDevice(22, new DefaultTransport(new TestNetwork(map, 122, 1))).initialize();
+        final LocalDeviceImpl d12 = new LocalDeviceImpl(22, new DefaultTransport(new TestNetwork(map, 122, 1))).initialize();
         d12.sendGlobalBroadcast(d12.getIAm());
         Thread.sleep(300);
 
@@ -94,13 +94,13 @@ public class RemoteDeviceDiscovererTest {
     public void withCallback() throws Exception {
         final BiPredicate<RemoteDevice, Integer> predicate = (d, i) -> d.getInstanceNumber() == i;
 
-        final LocalDevice d1 = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 1))).initialize();
-        final LocalDevice d2 = new LocalDevice(12, new DefaultTransport(new TestNetwork(map, 112, 1))).initialize();
-        final LocalDevice d3 = new LocalDevice(13, new DefaultTransport(new TestNetwork(map, 113, 1))).initialize();
-        final LocalDevice d4 = new LocalDevice(14, new DefaultTransport(new TestNetwork(map, 114, 1))).initialize();
-        final LocalDevice d5 = new LocalDevice(15, new DefaultTransport(new TestNetwork(map, 115, 1))).initialize();
-        final LocalDevice d6 = new LocalDevice(16, new DefaultTransport(new TestNetwork(map, 116, 1))).initialize();
-        final LocalDevice d7 = new LocalDevice(17, new DefaultTransport(new TestNetwork(map, 117, 1))).initialize();
+        final LocalDeviceImpl d1 = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 1))).initialize();
+        final LocalDeviceImpl d2 = new LocalDeviceImpl(12, new DefaultTransport(new TestNetwork(map, 112, 1))).initialize();
+        final LocalDeviceImpl d3 = new LocalDeviceImpl(13, new DefaultTransport(new TestNetwork(map, 113, 1))).initialize();
+        final LocalDeviceImpl d4 = new LocalDeviceImpl(14, new DefaultTransport(new TestNetwork(map, 114, 1))).initialize();
+        final LocalDeviceImpl d5 = new LocalDeviceImpl(15, new DefaultTransport(new TestNetwork(map, 115, 1))).initialize();
+        final LocalDeviceImpl d6 = new LocalDeviceImpl(16, new DefaultTransport(new TestNetwork(map, 116, 1))).initialize();
+        final LocalDeviceImpl d7 = new LocalDeviceImpl(17, new DefaultTransport(new TestNetwork(map, 117, 1))).initialize();
 
         final List<Integer> expected = TestUtils.toList(12, 13, 14, 15, 16, 17);
         final RemoteDeviceDiscoverer discoverer = new RemoteDeviceDiscoverer(d1, (d) -> {
@@ -116,7 +116,7 @@ public class RemoteDeviceDiscovererTest {
         //
         // Add some more devices
         expected.add(18);
-        final LocalDevice d8 = new LocalDevice(18, new DefaultTransport(new TestNetwork(map, 118, 1))).initialize();
+        final LocalDeviceImpl d8 = new LocalDeviceImpl(18, new DefaultTransport(new TestNetwork(map, 118, 1))).initialize();
         d8.sendGlobalBroadcast(d8.getIAm());
         Thread.sleep(300);
 
@@ -129,17 +129,17 @@ public class RemoteDeviceDiscovererTest {
         // Add some more devices
         expected.add(19);
         expected.add(20);
-        final LocalDevice d9 = new LocalDevice(19, new DefaultTransport(new TestNetwork(map, 119, 1))).initialize();
+        final LocalDeviceImpl d9 = new LocalDeviceImpl(19, new DefaultTransport(new TestNetwork(map, 119, 1))).initialize();
         d9.sendGlobalBroadcast(d9.getIAm());
-        final LocalDevice d10 = new LocalDevice(20, new DefaultTransport(new TestNetwork(map, 120, 1))).initialize();
+        final LocalDeviceImpl d10 = new LocalDeviceImpl(20, new DefaultTransport(new TestNetwork(map, 120, 1))).initialize();
         d10.sendGlobalBroadcast(d10.getIAm());
         Thread.sleep(300);
 
         // Stop and add more devices to make sure they are not discovered.
         discoverer.stop();
-        final LocalDevice d11 = new LocalDevice(21, new DefaultTransport(new TestNetwork(map, 121, 1))).initialize();
+        final LocalDeviceImpl d11 = new LocalDeviceImpl(21, new DefaultTransport(new TestNetwork(map, 121, 1))).initialize();
         d11.sendGlobalBroadcast(d11.getIAm());
-        final LocalDevice d12 = new LocalDevice(22, new DefaultTransport(new TestNetwork(map, 122, 1))).initialize();
+        final LocalDeviceImpl d12 = new LocalDeviceImpl(22, new DefaultTransport(new TestNetwork(map, 122, 1))).initialize();
         d12.sendGlobalBroadcast(d12.getIAm());
         Thread.sleep(300);
 

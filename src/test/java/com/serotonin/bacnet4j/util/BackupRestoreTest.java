@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.TestUtils;
 import com.serotonin.bacnet4j.event.DefaultReinitializeDeviceHandler;
 import com.serotonin.bacnet4j.exception.BACnetServiceException;
@@ -37,8 +38,8 @@ import com.serotonin.bacnet4j.type.primitive.ObjectIdentifier;
  */
 public class BackupRestoreTest {
     private final TestNetworkMap map = new TestNetworkMap();
-    private final LocalDevice a = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0)));
-    private final LocalDevice b = new LocalDevice(2, new DefaultTransport(new TestNetwork(map, 2, 0)));
+    private final LocalDeviceImpl a = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0)));
+    private final LocalDeviceImpl b = new LocalDeviceImpl(2, new DefaultTransport(new TestNetwork(map, 2, 0)));
 
     private File file;
 

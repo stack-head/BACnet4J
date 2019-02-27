@@ -7,7 +7,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.RemoteDevice;
 import com.serotonin.bacnet4j.npdu.ip.IpNetwork;
 import com.serotonin.bacnet4j.npdu.ip.IpNetworkBuilder;
@@ -22,13 +22,13 @@ import com.serotonin.bacnet4j.type.primitive.ObjectIdentifier;
 import com.serotonin.bacnet4j.util.RequestUtils;
 
 public class SchedulerTest {
-    static LocalDevice localDevice;
+    static LocalDeviceImpl localDevice;
     static RemoteDevice d;
 
     public static void main(final String[] args) throws Exception {
         final IpNetwork network = new IpNetworkBuilder().withBroadcast("192.168.255.255", 16).build();
         final DefaultTransport transport = new DefaultTransport(network);
-        localDevice = new LocalDevice(123, transport);
+        localDevice = new LocalDeviceImpl(123, transport);
         //        localDevice.initialize();
 
         try {

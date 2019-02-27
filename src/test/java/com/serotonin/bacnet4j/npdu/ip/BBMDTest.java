@@ -18,7 +18,7 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.RemoteDevice;
 import com.serotonin.bacnet4j.event.DeviceEventAdapter;
 import com.serotonin.bacnet4j.service.unconfirmed.WhoIsRequest;
@@ -473,7 +473,7 @@ public class BBMDTest {
                 .build();       
         info.network.enableBBMD();
 
-        info.ld = new LocalDevice(subnet * 10 + addr, new DefaultTransport(info.network)) //
+        info.ld = new LocalDeviceImpl(subnet * 10 + addr, new DefaultTransport(info.network)) //
                 .withClock(clock) //
                 .initialize();
 
@@ -513,7 +513,7 @@ public class BBMDTest {
     List<DatagramSocket> allSockets = new ArrayList<>();
 
     class LDInfo {
-        LocalDevice ld;
+        LocalDeviceImpl ld;
         IpNetwork network;
         MutableInt iamCount;
 

@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.TestUtils;
 import com.serotonin.bacnet4j.npdu.test.TestNetwork;
 import com.serotonin.bacnet4j.npdu.test.TestNetworkMap;
@@ -30,11 +30,11 @@ import com.serotonin.bacnet4j.type.primitive.UnsignedInteger;
 public class RemoveListElementRequestTest {
     private final TestNetworkMap map = new TestNetworkMap();
     private final Address addr = TestNetworkUtils.toAddress(2);
-    private LocalDevice localDevice;
+    private LocalDeviceImpl localDevice;
 
     @Before
     public void before() throws Exception {
-        localDevice = new LocalDevice(1, new DefaultTransport(new TestNetwork(map, 1, 0)));
+        localDevice = new LocalDeviceImpl(1, new DefaultTransport(new TestNetwork(map, 1, 0)));
         localDevice.writePropertyInternal(PropertyIdentifier.vtClassesSupported,
                 new SequenceOf<>(VtClass.defaultTerminal, VtClass.ansi_x3_64, VtClass.dec_vt52, VtClass.dec_vt100,
                         VtClass.dec_vt220, VtClass.hp_700_94, VtClass.ibm_3130));

@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.RemoteDevice;
 import com.serotonin.bacnet4j.exception.BACnetException;
 import com.serotonin.bacnet4j.npdu.test.TestNetwork;
@@ -24,8 +24,8 @@ import com.serotonin.bacnet4j.type.primitive.UnsignedInteger;
 
 public class ReadPriorityArrayTest {
     private final TestNetworkMap map = new TestNetworkMap();
-    private LocalDevice localDevice;
-    private LocalDevice remoteDevice;
+    private LocalDeviceImpl localDevice;
+    private LocalDeviceImpl remoteDevice;
     private final int localDeviceId = 1;
     private final int remoteDeviceId = 2;
     private PriorityArray priorityArray;
@@ -33,9 +33,9 @@ public class ReadPriorityArrayTest {
 
     @Before
     public void before() throws Exception {
-        localDevice = new LocalDevice(localDeviceId, new DefaultTransport(new TestNetwork(map, localDeviceId, 0)))
+        localDevice = new LocalDeviceImpl(localDeviceId, new DefaultTransport(new TestNetwork(map, localDeviceId, 0)))
                 .initialize();
-        remoteDevice = new LocalDevice(remoteDeviceId, new DefaultTransport(new TestNetwork(map, remoteDeviceId, 0)))
+        remoteDevice = new LocalDeviceImpl(remoteDeviceId, new DefaultTransport(new TestNetwork(map, remoteDeviceId, 0)))
                 .initialize();
 
         //Add Objects and properties

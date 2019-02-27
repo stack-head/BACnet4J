@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import com.serotonin.bacnet4j.LocalDevice;
+import com.serotonin.bacnet4j.LocalDeviceImpl;
 import com.serotonin.bacnet4j.npdu.test.TestNetwork;
 import com.serotonin.bacnet4j.npdu.test.TestNetworkMap;
 import com.serotonin.bacnet4j.transport.DefaultTransport;
@@ -18,7 +18,7 @@ public class RemoteEntityCacheTest {
     @Test
     public void test() {
         final WarpClock clock = new WarpClock();
-        final LocalDevice d = new LocalDevice(0, new DefaultTransport(new TestNetwork(map, 1, 10))).withClock(clock);
+        final LocalDeviceImpl d = new LocalDeviceImpl(0, new DefaultTransport(new TestNetwork(map, 1, 10))).withClock(clock);
 
         final RemoteEntityCache<String, String> cache = new RemoteEntityCache<>(d);
 
